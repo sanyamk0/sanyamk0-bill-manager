@@ -1,6 +1,9 @@
-import { BadgeDollarSign, TrendingUp, Wallet } from "lucide-react";
+import { BadgeDollarSign, PlusCircle, TrendingUp, Wallet } from "lucide-react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectTotalAmount } from "../../features/bills/selectors";
+import Modal from "../common/Modal";
+import BillForm from "./BillForm";
 import BillList from "./BillList";
 import { formatCurrency } from "@/utils/format";
 
@@ -22,6 +25,7 @@ const StatCard = ({ label, value, icon: Icon, type = "primary" }) => (
 );
 
 const BillDashboard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const totalAmount = useSelector(selectTotalAmount);
   const monthlyBudget = useSelector((state) => state.bills.monthlyBudget);
   const budgetUsage = (totalAmount / monthlyBudget) * 100;
@@ -38,6 +42,13 @@ const BillDashboard = () => {
               Manage and track your expenses
             </p>
           </div>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="btn btn-primary"
+          >
+            <PlusCircle className="w-5 h-5" />
+            Add New Bill
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -62,6 +73,10 @@ const BillDashboard = () => {
         </div>
 
         <BillList />
+
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <BillForm onClose={() => setIsModalOpen(false)} />
+        </Modal>
       </div>
     </div>
   );
