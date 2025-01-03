@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
+import BillDashboard from "./components/bills/BillDashboard";
+
 const App = () => {
-  const isLoading = true;
+  const isLoading = useSelector((state) => state.bills.isLoading);
 
   return (
     <div className="min-h-screen bg-background">
@@ -9,7 +12,7 @@ const App = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           </div>
         ) : (
-          <p>Dashboard</p>
+          <BillDashboard />
         )}
       </main>
     </div>
