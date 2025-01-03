@@ -1,5 +1,6 @@
 import { Calendar, DollarSign, FileText, ListFilter } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useBillActions } from "../../hooks/useBillActions";
 import { CATEGORIES } from "@/utils/constants";
 
 const BILL_CATEGORIES = CATEGORIES.slice(1);
@@ -14,6 +15,7 @@ const BillForm = ({ initialData = null, onClose }) => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { handleAddBill, handleUpdateBill } = useBillActions();
 
   // Load initial data if editing
   useEffect(() => {
@@ -55,6 +57,22 @@ const BillForm = ({ initialData = null, onClose }) => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    try {
+      if (initialData) {
+        await handleUpdateBill(formData);
+      } else {
+        await handleAddBill(formData);
+      }
+      onClose();
+    } catch (error) {
+      console.error(error);
+      setErrors((prev) => ({
+        ...prev,
+        submit: "Failed to save bill. Please try again.",
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {

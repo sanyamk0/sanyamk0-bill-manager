@@ -17,3 +17,30 @@ export const selectTotalAmount = createSelector(
   [selectFilteredBills],
   (bills) => bills.reduce((sum, bill) => sum + Number(bill.amount), 0)
 );
+
+export const selectOptimalBills = createSelector(
+  [(state) => state.bills.items, (state) => state.bills.monthlyBudget],
+  (bills, budget) => {
+    // Sort bills by amount in ascending order
+    const sortedBills = [...bills].sort(
+      (a, b) => Number(a.amount) - Number(b.amount)
+    );
+    const optimal = new Set();
+    let totalAmount = 0;
+
+    // Greedy approach to maximize the number of bills within budget
+    for (const bill of sortedBills) {
+      const amount = Number(bill.amount);
+      if (totalAmount + amount <= budget) {
+        optimal.add(bill.id);
+        totalAmount += amount;
+      }
+    }
+
+    return {
+      optimalBillIds: optimal,
+      count: optimal.size,
+      totalAmount: totalAmount,
+    };
+  }
+);
