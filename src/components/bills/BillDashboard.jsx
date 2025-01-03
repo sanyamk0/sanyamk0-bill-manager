@@ -1,5 +1,7 @@
 import { BadgeDollarSign, TrendingUp, Wallet } from "lucide-react";
 import { useSelector } from "react-redux";
+import { selectTotalAmount } from "../../features/bills/selectors";
+import BillList from "./BillList";
 import { formatCurrency } from "@/utils/format";
 
 const StatCard = ({ label, value, icon: Icon, type = "primary" }) => (
@@ -20,7 +22,7 @@ const StatCard = ({ label, value, icon: Icon, type = "primary" }) => (
 );
 
 const BillDashboard = () => {
-  const totalAmount = 50000;
+  const totalAmount = useSelector(selectTotalAmount);
   const monthlyBudget = useSelector((state) => state.bills.monthlyBudget);
   const budgetUsage = (totalAmount / monthlyBudget) * 100;
 
@@ -58,6 +60,8 @@ const BillDashboard = () => {
             type={budgetUsage > 90 ? "warning" : "success"}
           />
         </div>
+
+        <BillList />
       </div>
     </div>
   );
