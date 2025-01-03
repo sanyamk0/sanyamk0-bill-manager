@@ -11,7 +11,15 @@ const initialState = {
 const billsSlice = createSlice({
   name: "bills",
   initialState,
-  reducers: {},
+  reducers: {
+    setCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+    },
+    setBudget: (state, action) => {
+      state.monthlyBudget = action.payload;
+    },
+  },
 });
 
+export const { setCategory, setBudget } = billsSlice.actions;
 export default billsSlice.reducer;

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectTotalAmount } from "../../features/bills/selectors";
 import Modal from "../common/Modal";
+import BillFilters from "./BillFilters";
 import BillForm from "./BillForm";
 import BillList from "./BillList";
 import { formatCurrency } from "@/utils/format";
@@ -72,6 +73,7 @@ const BillDashboard = () => {
           />
         </div>
 
+        <BillFilters />
         <BillList />
 
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
