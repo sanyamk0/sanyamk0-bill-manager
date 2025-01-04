@@ -20,9 +20,13 @@ const BillForm = ({ initialData = null, onClose }) => {
   // Load initial data if editing
   useEffect(() => {
     if (initialData) {
+      const localDate = new Date(initialData.date);
+      localDate.setMinutes(
+        localDate.getMinutes() - localDate.getTimezoneOffset()
+      );
       setFormData({
         ...initialData,
-        date: new Date(initialData.date).toISOString().split("T")[0],
+        date: localDate.toISOString().split("T")[0],
       });
     }
   }, [initialData]);
